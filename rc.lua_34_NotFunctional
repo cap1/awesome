@@ -16,9 +16,9 @@ require("awful.rules")
 require("awful.autofocus")
 -- User libraries
 require("vicious")
-require("teardrop")
-require("scratchpad")
 require("eminent")
+--require("teardrop")
+require("scratchpad")
 -- }}}
 
 
@@ -51,13 +51,13 @@ local layouts = {
 -- {{{ Tags
 local tags = {}
 tags.setup = {
-    { name = "shells",  layout = layouts[3]  },
+    { name = "sh",  layout = layouts[3]  },
     { name = "meangene", layout = layouts[3]  },
-    { name = "http",   layout = layouts[6]  },
-    { name = "mail",  layout = layouts[6]  },
-    { name = "media",    layout = layouts[5] },
-    { name = "code",     layout = layouts[3] },
-    { name = "wacom",     layout = layouts[2] },
+    { name = "http",   layout = layouts[5]  },
+    { name = "mail",  layout = layouts[5]  },
+    { name = "av",    layout = layouts[5], mwfact = 0.13 },
+    { name = "code",     layout = layouts[1] },
+    { name = "wacom",     layout = layouts[5] },
     { name = "office",   layout = layouts[6]  },
     { name = "misc", layout = layouts[1]  }
 }
@@ -73,10 +73,6 @@ for s = 1, screen.count() do
     end
     tags[s][1].selected = true
 end
--- }}}
-
-
-
 -- }}}
 
 
@@ -143,8 +139,8 @@ local fsicon = widget({ type = "imagebox" })
 fsicon.image = image(beautiful.widget_fs)
 -- Initialize widgets
 local fs = {
-  r = awful.widget.progressbar(),  h = awful.widget.progressbar(),
-  s = awful.widget.progressbar(),  b = awful.widget.progressbar()
+  r = awful.widget.progressbar(),  h = awful.widget.progressbar()
+--  s = awful.widget.progressbar(),  b = awful.widget.progressbar()
 }
 -- Progressbar properties
 for _, w in pairs(fs) do
@@ -167,8 +163,8 @@ vicious.enable_caching(vicious.widgets.fs)
 -- Register widgets
 vicious.register(fs.r, vicious.widgets.fs, "${/ usep}",            599)
 vicious.register(fs.h, vicious.widgets.fs, "${/home usep}",        599)
---vicious.register(fs.s, vicious.widgets.fs, "${/mnt/storage usep}", 599)
---vicious.register(fs.b, vicious.widgets.fs, "${/mnt/backup usep}",  599)
+--vicious.register(fs.s, vicious.widgets.fs, "${/mnt usep}", 599)
+--vicious.register(fs.b, vicious.widgets.fs, "${/home/cap/suttung usep}",  599)
 -- }}}
 
 -- {{{ Network usage
@@ -178,8 +174,13 @@ dnicon.image = image(beautiful.widget_net)
 upicon.image = image(beautiful.widget_netup)
 -- Initialize widget
 local netwidget = widget({ type = "textbox" })
+
+--wlan0 or eht0 ?
+
+netset = 802
+
 -- Register widget
-if 0==1 then
+if netset == 42 then
 vicious.register(netwidget, vicious.widgets.net, '<span color="'
   .. beautiful.fg_netdn_widget ..'">${eth0 down_kb}</span> <span color="'
   .. beautiful.fg_netup_widget ..'">${eth0 up_kb}</span>', 3)
@@ -233,33 +234,38 @@ end
 -- }}}
 
 -- {{{ Volume level
-local volicon = widget({ type = "imagebox" })
-volicon.image = image(beautiful.widget_vol)
+--local volicon = widget({ type = "imagebox" })
+--volicon.image = image(beautiful.widget_vol)
 -- Initialize widgets
-local volwidget = widget({ type = "textbox" })
-local volbar    = awful.widget.progressbar()
+--local volwidget = widget({ type = "textbox" })
+--local volbar    = awful.widget.progressbar()
 -- Progressbar properties
-volbar:set_width(8)
-volbar:set_height(10)
-volbar:set_vertical(true)
-volbar:set_background_color(beautiful.fg_off_widget)
-volbar:set_border_color(nil)
-volbar:set_color(beautiful.fg_widget)
-volbar:set_gradient_colors({ beautiful.fg_widget,
-    beautiful.fg_center_widget, beautiful.fg_end_widget })
-awful.widget.layout.margins[volbar.widget] = { top = 2, bottom = 2 }
+--volbar:set_width(8)
+--volbar:set_height(10)
+--volbar:set_vertical(true)
+--volbar:set_background_color(beautiful.fg_off_widget)
+--volbar:set_border_color(nil)
+--volbar:set_color(beautiful.fg_widget)
+--volbar:set_gradient_colors({ beautiful.fg_widget,
+--    beautiful.fg_center_widget, beautiful.fg_end_widget })
+--awful.widget.layout.margins[volbar.widget] = { top = 2, bottom = 2 }
 -- Enable caching
-vicious.enable_caching(vicious.widgets.volume)
+--vicious.enable_caching(vicious.widgets.volume)
 -- Register widgets
-vicious.register(volwidget, vicious.widgets.volume, "$1%", 2, "PCM")
-vicious.register(volbar,    vicious.widgets.volume, "$1",  2, "PCM")
+--vicious.register(volwidget, vicious.widgets.volume, "$1%", 2, "PCM")
+--vicious.register(volbar,    vicious.widgets.volume, "$1",  2, "PCM")
 -- Register buttons
-volbar.widget:buttons(awful.util.table.join(
-   awful.button({ }, 1, function () exec("kmix") end),
-   awful.button({ }, 2, function () exec("amixer -q sset Master toggle") end),
-   awful.button({ }, 4, function () exec("amixer -q sset PCM 2dB+") end),
-   awful.button({ }, 5, function () exec("amixer -q sset PCM 2dB-") end)
-)) volwidget:buttons( volbar.widget:buttons() )
+--volbar.widget:buttons(awful.util.table.join(
+--   awful.button({ }, 1, function () exec("kmix") end),
+--   awful.button({ }, 2, function () exec("amixer -q sset Master toggle") end),
+--   awful.button({ }, 4, function () exec("amixer -q sset PCM 2dB+") end),
+--   awful.button({ }, 5, function () exec("amixer -q sset PCM 2dB-") end)
+---)) volwidget:buttons( volbar.widget:buttons() )
+-- }}}
+
+-- {{{ Keyboardlayout box
+local keylayoutbox = widget({ type = "textbox" })
+keylayoutbox.text = "de"
 -- }}}
 
 -- {{{ Date and time
@@ -314,37 +320,25 @@ for s = 1, screen.count() do
         bg = beautiful.bg_normal, position = "top"
     })
     -- Add widgets to the wibox
-    if s == 2 or screen.count() == 1 then
     wibox[s].widgets = {
         {   taglist[s],
             layoutbox[s],
             promptbox[s],
             layout = awful.widget.layout.horizontal.leftright
         },
-		s == screen.count() and systray or nil,
-        spacer, separator, spacer, datewidget, dateicon,
+        s == screen.count() and systray or nil,
+--        seperator,spacer, keylayoutbox, spacer,
+		seperator, spacer, datewidget, dateicon,
 --        separator, volwidget, spacer, volbar.widget, volicon,
 --       separator, spacer, orgwidget, orgicon,
 --        separator, mailwidget, mailicon,
-	    separator, upicon, netwidget, dnicon,
-        separator, fs.h.widget, fs.r.widget, space, fsicon,
+        separator, upicon, netwidget, dnicon,
+        separator, spacer, fs.h.widget, fs.r.widget, fsicon,
         separator, spacer, membar.widget, spacer, memicon,
         separator, spacer, batwidget, baticon,
-        separator, cpugraph.widget, spacer, tzswidget, cpuicon,
+        separator, spacer, cpugraph.widget, cpuicon, tzswidget,
         layout = awful.widget.layout.horizontal.rightleft
     }
-	else
-    wibox[s].widgets = {
-        {   taglist[s],
-            layoutbox[s],
-            promptbox[s],
-            layout = awful.widget.layout.horizontal.leftright
-        },
-		s == screen.count() and systray or nil,
-        datewidget, dateicon,
-        layout = awful.widget.layout.horizontal.rightleft
-    }
-	end
 end
 -- }}}
 -- }}}
@@ -370,24 +364,24 @@ local clientbuttons = awful.util.table.join(
 -- {{{ Global keys
 local globalkeys = awful.util.table.join(
     -- {{{ Applications
-    awful.key({ modkey }, "t", function () exec("thunderbird") end),
-    awful.key({ modkey }, "w", function () exec("firefox") end),
+    awful.key({ modkey }, "t", function () exec("run_once thunderbird") end),
+    awful.key({ modkey }, "w", function () exec("run_once firefox") end),
     awful.key({ modkey }, "Return",  function () exec("urxvt") end),
-	--    awful.key({ modkey }, "a", function () exec("urxvt -title Alpine -e alpine_exp") end),
---    awful.key({ modkey }, "g", function () sexec("GTK2_RC_FILES=~/.gtkrc-gajim gajim") end),
---    awful.key({ modkey }, "q", function () exec("emacsclient --eval '(make-remember-frame)'") end),
-    -- }}}
---	Keyboard Layout change auf ThinkVantage
     awful.key({ }, "#156", function () exec("toggle_layout") end),
+    awful.key({ modkey }, "m", function () exec("urxvt -e mocp") end),
+--    awful.key({ modkey }, "e", function () exec("evince") end),
+--    awful.key({ modkey }, "w", function () exec("xournal") end),
+    -- }}}
+
     -- {{{ Multimedia keys
---    awful.key({}, "#121", function () exec("pvol.py -m") end),
---    awful.key({}, "#122", function () exec("pvol.py -p -c -2") end),
---    awful.key({}, "#123", function () exec("pvol.py -p -c 2") end),
---    awful.key({}, "#232", function () exec("plight.py -s -a") end),
---    awful.key({}, "#233", function () exec("plight.py -s -a") end),
---    awful.key({}, "#244", function () exec("sudo /usr/sbin/pm-hibernate") end),
---    awful.key({}, "#150", function () exec("sudo /usr/sbin/pm-suspend") end),
---    awful.key({}, "#225", function () exec("pypres.py") end),
+    --awful.key({}, "#121", function () exec("pvol.py -m") end),
+    --awful.key({}, "#122", function () exec("pvol.py -p -c -2") end),
+    --awful.key({}, "#123", function () exec("pvol.py -p -c 2") end),
+    --awful.key({}, "#232", function () exec("plight.py -s -a") end),
+    --awful.key({}, "#233", function () exec("plight.py -s -a") end),
+    --awful.key({}, "#244", function () exec("sudo /usr/sbin/pm-hibernate") end),
+    --awful.key({}, "#150", function () exec("sudo /usr/sbin/pm-suspend") end),
+    --awful.key({}, "#225", function () exec("pypres.py") end),
     -- }}}
 
     -- {{{ Prompt menus
@@ -525,6 +519,7 @@ end
 root.keys(globalkeys)
 -- }}}
 
+
 -- {{{ Rules
 awful.rules.rules = {
     { rule = { },
@@ -563,6 +558,7 @@ awful.rules.rules = {
       properties = { floating = true } },
 }
 -- }}}
+
 
 -- {{{ Signals
 --
@@ -607,3 +603,8 @@ client.add_signal("focus",   function (c) c.border_color = beautiful.border_focu
 client.add_signal("unfocus", function (c) c.border_color = beautiful.border_normal end)
 -- }}}
 -- }}}
+
+-- Autostart Programms
+-- these applications will automatically start
+os.execute("run_once urxvt")
+
