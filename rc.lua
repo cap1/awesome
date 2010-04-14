@@ -76,7 +76,9 @@ end
 -- }}}
 
 
-
+-- {{{ Autostart
+exec("run_once urxvtd")
+exec("urxvtc")
 -- }}}
 
 
@@ -96,7 +98,7 @@ local cpuicon = widget({ type = "imagebox" })
 cpuicon.image = image(beautiful.widget_cpu)
 -- Initialize widgets
 local tzswidget = widget({ type = "textbox" })
-local cpugraph  = awful.widget.graph()
+local cpugraph = awful.widget.graph()
 -- Graph properties
 cpugraph:set_width(50)
 cpugraph:set_height(14)
@@ -179,7 +181,7 @@ upicon.image = image(beautiful.widget_netup)
 -- Initialize widget
 local netwidget = widget({ type = "textbox" })
 -- Register widget
-if 0==1 then
+if 1==1 then
 vicious.register(netwidget, vicious.widgets.net, '<span color="'
   .. beautiful.fg_netdn_widget ..'">${eth0 down_kb}</span> <span color="'
   .. beautiful.fg_netup_widget ..'">${eth0 up_kb}</span>', 3)
@@ -326,8 +328,8 @@ for s = 1, screen.count() do
 --        separator, volwidget, spacer, volbar.widget, volicon,
 --       separator, spacer, orgwidget, orgicon,
 --        separator, mailwidget, mailicon,
-	    separator, upicon, netwidget, dnicon,
-        separator, fs.h.widget, fs.r.widget, space, fsicon,
+	    separator, upicon, netwidget, dnicon, spacer,
+        separator, fs.h.widget, fs.r.widget, fsicon,
         separator, spacer, membar.widget, spacer, memicon,
         separator, spacer, batwidget, baticon,
         separator, cpugraph.widget, spacer, tzswidget, cpuicon,
@@ -372,7 +374,7 @@ local globalkeys = awful.util.table.join(
     -- {{{ Applications
     awful.key({ modkey }, "t", function () exec("thunderbird") end),
     awful.key({ modkey }, "w", function () exec("firefox") end),
-    awful.key({ modkey }, "Return",  function () exec("urxvt") end),
+    awful.key({ modkey }, "Return",  function () exec("urxvtc") end),
 	--    awful.key({ modkey }, "a", function () exec("urxvt -title Alpine -e alpine_exp") end),
 --    awful.key({ modkey }, "g", function () sexec("GTK2_RC_FILES=~/.gtkrc-gajim gajim") end),
 --    awful.key({ modkey }, "q", function () exec("emacsclient --eval '(make-remember-frame)'") end),
