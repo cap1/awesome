@@ -8,7 +8,7 @@
 theme = {}
 theme.confdir       = awful.util.getdir("config")
 --theme.wallpaper_cmd = { "/usr/bin/nitrogen --restore" }
-theme.wallpaper_cmd = { "awsetbg /home/cap/pictures/wp/arch_family_FINAL.png" }
+theme.wallpaper_cmd = { "awsetbg /home/cap/pictures/wp/think_linux.jpg" }
 -- }}}
 
 

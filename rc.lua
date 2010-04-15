@@ -51,10 +51,10 @@ local layouts = {
 -- {{{ Tags
 local tags = {}
 tags.setup = {
-    { name = "shells",  layout = layouts[3]  },
+    { name = "zsh",  layout = layouts[3]  },
     { name = "meangene", layout = layouts[3]  },
     { name = "http",   layout = layouts[6]  },
-    { name = "mail",  layout = layouts[6]  },
+    { name = "mail",  layout = layouts[6]  ,mwfact = 0.85 },
     { name = "media",    layout = layouts[5] },
     { name = "code",     layout = layouts[3] },
     { name = "wacom",     layout = layouts[2] },
@@ -78,7 +78,6 @@ end
 
 -- {{{ Autostart
 exec("run_once urxvtd")
-exec("urxvtc")
 -- }}}
 
 
@@ -328,11 +327,11 @@ for s = 1, screen.count() do
 --        separator, volwidget, spacer, volbar.widget, volicon,
 --       separator, spacer, orgwidget, orgicon,
 --        separator, mailwidget, mailicon,
-	    separator, upicon, netwidget, dnicon, spacer,
-        separator, fs.h.widget, fs.r.widget, fsicon,
+	    separator, upicon, netwidget, dnicon,
+        separator, spacer,fs.h.widget, fs.r.widget, fsicon,
         separator, spacer, membar.widget, spacer, memicon,
         separator, spacer, batwidget, baticon,
-        separator, cpugraph.widget, spacer, tzswidget, cpuicon,
+        separator, spacer, cpugraph.widget, spacer, tzswidget, cpuicon,
         layout = awful.widget.layout.horizontal.rightleft
     }
 	else
