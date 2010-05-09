@@ -26,17 +26,22 @@ theme.bg_normal = "#3F3F3F"
 theme.bg_focus  = "#1E2320"
 theme.bg_urgent = "#3F3F3F"
 -- }}}
+---
 
+theme.bg_normal     = "#272725"
+theme.bg_focus      = "#7985A3"
+theme.bg_urgent     = "#A36666"
+
+---
 -- {{{ Borders
 theme.border_width  = "1"
 theme.border_normal = "#3F3F3F"
 theme.border_focus  = "#6F6F6F"
 theme.border_marked = "#CC9393"
 -- }}}
-
 -- {{{ Titlebars
-theme.titlebar_bg_focus  = "#3F3F3F"
-theme.titlebar_bg_normal = "#3F3F3F"
+theme.titlebar_bg_focus  = "#A36666"
+theme.titlebar_bg_normal = "#A36666"
 -- theme.titlebar_[normal|focus]
 -- }}}
 
@@ -47,7 +52,7 @@ theme.fg_end_widget    = "#FF5656"
 theme.fg_off_widget    = "#494B4F"
 theme.fg_netup_widget  = "#7F9F7F"
 theme.fg_netdn_widget  = "#CC9393"
-theme.bg_widget        = "#3F3F3F"
+theme.bg_widget        = "#EFEFEF"
 theme.border_widget    = "#3F3F3F"
 -- }}}
 

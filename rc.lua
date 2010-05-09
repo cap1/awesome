@@ -180,7 +180,7 @@ upicon.image = image(beautiful.widget_netup)
 -- Initialize widget
 local netwidget = widget({ type = "textbox" })
 -- Register widget
-if 1==1 then
+if 0==1 then
 vicious.register(netwidget, vicious.widgets.net, '<span color="'
   .. beautiful.fg_netdn_widget ..'">${eth0 down_kb}</span> <span color="'
   .. beautiful.fg_netup_widget ..'">${eth0 up_kb}</span>', 3)
@@ -323,12 +323,12 @@ for s = 1, screen.count() do
             layout = awful.widget.layout.horizontal.leftright
         },
 		s == screen.count() and systray or nil,
-        spacer, separator, spacer, datewidget, dateicon,
+        spacer, datewidget, spacer ,dateicon,
 --        separator, volwidget, spacer, volbar.widget, volicon,
 --       separator, spacer, orgwidget, orgicon,
 --        separator, mailwidget, mailicon,
 	    separator, upicon, netwidget, dnicon,
-        separator, spacer,fs.h.widget, fs.r.widget, fsicon,
+        separator, spacer, fs.h.widget, fs.r.widget, fsicon,
         separator, spacer, membar.widget, spacer, memicon,
         separator, spacer, batwidget, baticon,
         separator, spacer, cpugraph.widget, spacer, tzswidget, cpuicon,
