@@ -19,6 +19,7 @@ require("vicious")
 require("teardrop")
 require("scratchpad")
 require("eminent")
+require("beautiful")
 -- }}}
 
 
@@ -26,6 +27,7 @@ require("eminent")
 --
 -- Beautiful theme
 beautiful.init(awful.util.getdir("config") .. "/zenburn.lua")
+--beautiful.init("/usr/share/awesome/themes/lunar/theme.lua")
 
 -- Modifier keys
 local altkey = "Mod1" -- Super_L
@@ -52,12 +54,12 @@ local layouts = {
 local tags = {}
 tags.setup = {
     { name = "zsh",  layout = layouts[3]  },
+    { name = "vim",     layout = layouts[2] },
     { name = "meangene", layout = layouts[3]  },
     { name = "http",   layout = layouts[6]  },
     { name = "mail",  layout = layouts[6]  ,mwfact = 0.85 },
-    { name = "media",    layout = layouts[5] },
     { name = "code",     layout = layouts[3] },
-    { name = "wacom",     layout = layouts[2] },
+    { name = "media",    layout = layouts[5] },
     { name = "office",   layout = layouts[6]  },
     { name = "misc", layout = layouts[1]  }
 }
@@ -168,7 +170,7 @@ vicious.enable_caching(vicious.widgets.fs)
 -- Register widgets
 vicious.register(fs.r, vicious.widgets.fs, "${/ usep}",            599)
 vicious.register(fs.h, vicious.widgets.fs, "${/home usep}",        599)
---vicious.register(fs.s, vicious.widgets.fs, "${/mnt/storage usep}", 599)
+vicious.register(fs.s, vicious.widgets.fs, "${/home/cap/data usep}", 599)
 --vicious.register(fs.b, vicious.widgets.fs, "${/mnt/backup usep}",  599)
 -- }}}
 
@@ -328,7 +330,7 @@ for s = 1, screen.count() do
 --       separator, spacer, orgwidget, orgicon,
 --        separator, mailwidget, mailicon,
 	    separator, upicon, netwidget, dnicon,
-        separator, spacer, fs.h.widget, fs.r.widget, fsicon,
+        separator, spacer, fs.s.widget, fs.h.widget, fs.r.widget, fsicon,
         separator, spacer, membar.widget, spacer, memicon,
         separator, spacer, batwidget, baticon,
         separator, spacer, cpugraph.widget, spacer, tzswidget, cpuicon,
@@ -536,14 +538,14 @@ awful.rules.rules = {
           keys = clientkeys,
           buttons = clientbuttons
     }},
-    { rule = { class = "Shredder" },
-      properties = { tag = tags[1][4] } },
+    { rule = { class = "Lanikai" },
+      properties = { tag = tags[1][5] } },
     { rule = { class = "evince" },
       properties = { tag = tags[1][8] } },
     { rule = { class = "Xournal" },
       properties = { tag = tags[1][7] } },
     { rule = { class = "Namoroka" },
-      properties = { tag = tags[1][3] } },
+      properties = { tag = tags[1][4] } },
     { rule = { class = "digikam" },
       properties = { tag = tags[1][6] } },
     { rule = { class = "Choqok" },
