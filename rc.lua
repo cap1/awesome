@@ -544,7 +544,7 @@ root.keys(globalkeys)
 	    { rule = { class = "evince" },
 	      properties = { tag = tags[1][8] } },
 	    { rule = { class = "Xournal" },
-	      properties = { tag = tags[1][7] } },
+	      properties = { tag = tags[1][6] } },
 	    { rule = { class = "Namoroka" },
 	      properties = { tag = tags[1][4] } },
 	    { rule = { class = "digikam" },
@@ -566,7 +566,7 @@ root.keys(globalkeys)
 	    { rule = { instance = "firefox" },
 	      properties = { floating = true } },
 	    { rule = { class = "Kile" },
-	      properties = { tag = tags[1][8] } },
+	      properties = { tag = tags[1][6] } },
 	    { rule = { class = "Okular" },
 	      properties = { tag = tags[1][8] } },
 	}
