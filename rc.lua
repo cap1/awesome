@@ -97,12 +97,15 @@ separator.text  = "|"
 -- {{{ CPU usage and temperature
 local cpuicon = widget({ type = "imagebox" })
 cpuicon.image = image(beautiful.widget_cpu)
+local tempicon = widget({ type = "imagebox" })
+tempicon.image = image(beautiful.widget_temp)
+
 -- Initialize widgets
 local tzswidget = widget({ type = "textbox" })
 local cpugraph = awful.widget.graph()
 -- Graph properties
-cpugraph:set_width(50)
-cpugraph:set_height(14)
+cpugraph:set_width(30)
+cpugraph:set_height(13)
 cpugraph:set_background_color(beautiful.fg_off_widget)
 cpugraph:set_color(beautiful.fg_end_widget)
 cpugraph:set_gradient_angle(0)
@@ -140,6 +143,12 @@ awful.widget.layout.margins[membar.widget] = { top = 2, bottom = 2 }
 -- Register widget
 vicious.register(membar, vicious.widgets.mem, "$1", 13)
 -- }}}
+
+-- {{{ Uptime and Load
+
+
+-- }}}
+
 
 -- {{{ File system usage
 local fsicon = widget({ type = "imagebox" })
@@ -282,7 +291,8 @@ datewidget:buttons(awful.util.table.join(
 local systray = widget({ type = "systray" })
 -- }}}
 -- }}}
-
+--
+--
 -- {{{ Wibox initialisation
 local wibox     = {}
 local promptbox = {}
@@ -329,11 +339,12 @@ for s = 1, screen.count() do
 --        separator, volwidget, spacer, volbar.widget, volicon,
 --       separator, spacer, orgwidget, orgicon,
 --        separator, mailwidget, mailicon,
-	    separator, upicon, netwidget, dnicon,
         separator, spacer, fs.s.widget, fs.h.widget, fs.r.widget, fsicon,
+	    separator, upicon, netwidget, dnicon,
         separator, spacer, membar.widget, spacer, memicon,
+		separator, spacer, cpugraph.widget, spacer, cpuicon, 
+		separator, spacer, tzswidget, tempicon, spacer,
         separator, spacer, batwidget, baticon,
-        separator, spacer, cpugraph.widget, spacer, tzswidget, cpuicon,
         layout = awful.widget.layout.horizontal.rightleft
     }
 	else
