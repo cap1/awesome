@@ -9,7 +9,7 @@ theme = {}
 theme.confdir       = awful.util.getdir("config")
 --theme.wallpaper_cmd = { "/usr/bin/nitrogen --restore" }
 if screen.count() == 1 then
-	theme.wallpaper_cmd = { "awsetbg /home/cap/pictures/wp/porsche_gen.jpg" }
+		theme.wallpaper_cmd = { "awsetbg /home/cap/pictures/wp/aweseome_orange.jpg" }
 else
 end
 -- }}}
