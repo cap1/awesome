@@ -156,36 +156,37 @@ vicious.register(loadwidget, vicious.widgets.uptime, "$4 $5 $6")
 --
 --
 ---- {{{ File system usage
---local fsicon = widget({ type = "imagebox" })
---fsicon.image = image(beautiful.widget_fs)
+local fsicon = widget({ type = "imagebox" })
+fsicon.image = image(beautiful.widget_fs)
 ---- Initialize widgets
---local fs = {
---  r = awful.widget.progressbar(),  h = awful.widget.progressbar(),
---  s = awful.widget.progressbar(),  b = awful.widget.progressbar()
---}
+local fs = {
+  r = awful.widget.progressbar(),  h = awful.widget.progressbar(),
+  s = awful.widget.progressbar(),
+ -- b = awful.widget.progressbar()
+}
 ---- Progressbar properties
---for _, w in pairs(fs) do
---  w:set_width(5)
---  w:set_height(12)
---  w:set_vertical(true)
---  w:set_background_color(beautiful.fg_off_widget)
---  w:set_border_color(beautiful.border_widget)
---  w:set_color(beautiful.fg_widget)
---  w:set_gradient_colors({ beautiful.fg_widget,
---    beautiful.fg_center_widget, beautiful.fg_end_widget })
---  awful.widget.layout.margins[w.widget] = { top = 1, bottom = 1 }
---  -- Register buttons
---  w.widget:buttons(awful.util.table.join(
---    awful.button({ }, 1, function () exec("rox", false) end)
---  ))
---end
+for _, w in pairs(fs) do
+  w:set_width(5)
+  w:set_height(12)
+  w:set_vertical(true)
+  w:set_background_color(beautiful.fg_off_widget)
+  w:set_border_color(beautiful.border_widget)
+  w:set_color(beautiful.fg_widget)
+  w:set_gradient_colors({ beautiful.fg_widget,
+    beautiful.fg_center_widget, beautiful.fg_end_widget })
+  awful.widget.layout.margins[w.widget] = { top = 1, bottom = 1 }
+  -- Register buttons
+  w.widget:buttons(awful.util.table.join(
+    awful.button({ }, 1, function () exec("rox", false) end)
+ ))
+end
 ---- Enable caching
---vicious.enable_caching(vicious.widgets.fs)
+vicious.cache(vicious.widgets.fs)
 ---- Register widgets
---vicious.register(fs.r, vicious.widgets.fs, "${/ usep}",            599)
---vicious.register(fs.h, vicious.widgets.fs, "${/home usep}",        599)
---vicious.register(fs.s, vicious.widgets.fs, "${/home/cap/data usep}", 599)
-----vicious.register(fs.b, vicious.widgets.fs, "${/mnt/backup usep}",  599)
+vicious.register(fs.r, vicious.widgets.fs, "${/ used_p}")
+vicious.register(fs.h, vicious.widgets.fs, "${/home used_p}")
+vicious.register(fs.s, vicious.widgets.fs, "${/home/cap/data used_p}")
+--vicious.register(fs.b, vicious.widgets.fs, "${/mnt/backup used_p}",  599)
 ---- }}}
 --
 -- {{{ Network usage
@@ -345,7 +346,7 @@ for s = 1, screen.count() do
 --        separator, volwidget, spacer, volbar.widget, volicon,
 --       separator, spacer, orgwidget, orgicon,
 --        separator, mailwidget, mailicon,
---        separator, spacer, fs.s.widget, fs.h.widget, fs.r.widget, fsicon,
+        separator, spacer, fs.s.widget, fs.h.widget, fs.r.widget, fsicon,
 	    separator, upicon, netwidget, dnicon,
         separator, spacer, membar.widget, spacer, memicon,
 		separator, spacer, cpugraph.widget, spacer, cpuicon,
