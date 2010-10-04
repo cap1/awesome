@@ -99,23 +99,25 @@ local cpuicon = widget({ type = "imagebox" })
 cpuicon.image = image(beautiful.widget_cpu)
 local tempicon = widget({ type = "imagebox" })
 tempicon.image = image(beautiful.widget_temp)
+--
 
--- Initialize widgets
+---- Initialize widgets
 local tzswidget = widget({ type = "textbox" })
 local cpugraph = awful.widget.graph()
--- Graph properties
-cpugraph:set_width(30)
-cpugraph:set_height(13)
+---- Graph properties
+cpugraph:set_width(26)
+cpugraph:set_height(10)
 cpugraph:set_background_color(beautiful.fg_off_widget)
 cpugraph:set_color(beautiful.fg_end_widget)
 cpugraph:set_gradient_angle(0)
 cpugraph:set_gradient_colors({ beautiful.fg_end_widget,
     beautiful.fg_center_widget, beautiful.fg_widget })
--- Register widgets
-vicious.register(cpugraph,  vicious.widgets.cpu,     "$1")
-vicious.register(tzswidget, vicious.widgets.thermal, "$1°C", 19, "THM0")
--- }}}
-
+awful.widget.layout.margins[cpugraph.widget] = { top = 2, bottom = 2 }
+--- Register widgets
+vicious.register(cpugraph,  vicious.widgets.cpu,     "$1", 3)
+vicious.register(tzswidget, vicious.widgets.thermal, "$1°C", 19, "thermal_zone0", "core")
+---- }}}
+--
 -- {{{ Battery state
 local baticon = widget({ type = "imagebox" })
 baticon.image = image(beautiful.widget_bat)
@@ -124,7 +126,7 @@ batwidget = widget({ type = "textbox" })
 -- Register widget
 vicious.register(batwidget, vicious.widgets.bat, "$1$2%", 61, "BAT0")
 -- }}}
-
+--
 -- {{{ Memory usage
 local memicon = widget({ type = "imagebox" })
 memicon.image = image(beautiful.widget_mem)
@@ -143,46 +145,49 @@ awful.widget.layout.margins[membar.widget] = { top = 2, bottom = 2 }
 -- Register widget
 vicious.register(membar, vicious.widgets.mem, "$1", 13)
 -- }}}
-
--- {{{ Uptime and Load
-
-
--- }}}
-
-
--- {{{ File system usage
-local fsicon = widget({ type = "imagebox" })
-fsicon.image = image(beautiful.widget_fs)
--- Initialize widgets
-local fs = {
-  r = awful.widget.progressbar(),  h = awful.widget.progressbar(),
-  s = awful.widget.progressbar(),  b = awful.widget.progressbar()
-}
--- Progressbar properties
-for _, w in pairs(fs) do
-  w:set_width(5)
-  w:set_height(12)
-  w:set_vertical(true)
-  w:set_background_color(beautiful.fg_off_widget)
-  w:set_border_color(beautiful.border_widget)
-  w:set_color(beautiful.fg_widget)
-  w:set_gradient_colors({ beautiful.fg_widget,
-    beautiful.fg_center_widget, beautiful.fg_end_widget })
-  awful.widget.layout.margins[w.widget] = { top = 1, bottom = 1 }
-  -- Register buttons
-  w.widget:buttons(awful.util.table.join(
-    awful.button({ }, 1, function () exec("rox", false) end)
-  ))
-end
--- Enable caching
-vicious.enable_caching(vicious.widgets.fs)
--- Register widgets
-vicious.register(fs.r, vicious.widgets.fs, "${/ usep}",            599)
-vicious.register(fs.h, vicious.widgets.fs, "${/home usep}",        599)
-vicious.register(fs.s, vicious.widgets.fs, "${/home/cap/data usep}", 599)
---vicious.register(fs.b, vicious.widgets.fs, "${/mnt/backup usep}",  599)
--- }}}
-
+--
+---- {{{ Uptime and Load
+uptimewidget = widget({ type = "textbox" })
+loadwidget = widget({ type = "textbox" })
+--
+vicious.register(uptimewidget, vicious.widgets.uptime, "$2h")
+vicious.register(loadwidget, vicious.widgets.uptime, "$4 $5 $6")
+---- }}}
+--
+--
+---- {{{ File system usage
+--local fsicon = widget({ type = "imagebox" })
+--fsicon.image = image(beautiful.widget_fs)
+---- Initialize widgets
+--local fs = {
+--  r = awful.widget.progressbar(),  h = awful.widget.progressbar(),
+--  s = awful.widget.progressbar(),  b = awful.widget.progressbar()
+--}
+---- Progressbar properties
+--for _, w in pairs(fs) do
+--  w:set_width(5)
+--  w:set_height(12)
+--  w:set_vertical(true)
+--  w:set_background_color(beautiful.fg_off_widget)
+--  w:set_border_color(beautiful.border_widget)
+--  w:set_color(beautiful.fg_widget)
+--  w:set_gradient_colors({ beautiful.fg_widget,
+--    beautiful.fg_center_widget, beautiful.fg_end_widget })
+--  awful.widget.layout.margins[w.widget] = { top = 1, bottom = 1 }
+--  -- Register buttons
+--  w.widget:buttons(awful.util.table.join(
+--    awful.button({ }, 1, function () exec("rox", false) end)
+--  ))
+--end
+---- Enable caching
+--vicious.enable_caching(vicious.widgets.fs)
+---- Register widgets
+--vicious.register(fs.r, vicious.widgets.fs, "${/ usep}",            599)
+--vicious.register(fs.h, vicious.widgets.fs, "${/home usep}",        599)
+--vicious.register(fs.s, vicious.widgets.fs, "${/home/cap/data usep}", 599)
+----vicious.register(fs.b, vicious.widgets.fs, "${/mnt/backup usep}",  599)
+---- }}}
+--
 -- {{{ Network usage
 local dnicon = widget({ type = "imagebox" })
 local upicon = widget({ type = "imagebox" })
@@ -201,79 +206,79 @@ vicious.register(netwidget, vicious.widgets.net, '<span color="'
   .. beautiful.fg_netup_widget ..'">${wlan0 up_kb}</span>', 3)
 end
 -- }}}
-
--- {{{ Mail subject
---local mailicon = widget({ type = "imagebox" })
---mailicon.image = image(beautiful.widget_mail)
--- Initialize widget
---local mailwidget = widget({ type = "textbox" })
--- Register widget
---vicious.register(mailwidget, vicious.widgets.mbox, "$1", 181, "/home/anrxc/mail/Inbox")
--- Register buttons
---mailwidget:buttons(awful.util.table.join(
---  awful.button({ }, 1, function () exec("urxvt -title Alpine -e alpine_exp") end)
---))
--- }}}
-
--- {{{ Org-mode agenda
---local orgicon = widget({ type = "imagebox" })
---orgicon.image = image(beautiful.widget_org)
+--
+---- {{{ Mail subject
+----local mailicon = widget({ type = "imagebox" })
+----mailicon.image = image(beautiful.widget_mail)
 ---- Initialize widget
---local orgwidget = widget({ type = "textbox" })
----- Configure widget
---local orgmode = {
---  files = {
---    "/home/anrxc/.org/work.org",     "/home/anrxc/.org/index.org",
---    "/home/anrxc/.org/personal.org", "/home/anrxc/.org/computers.org"
---  },
---  color = {
---    past   = '<span color="'..beautiful.fg_urgent..'">',
---    today  = '<span color="'..beautiful.fg_normal..'">',
---    soon   = '<span color="'..beautiful.fg_widget..'">',
---    future = '<span color="'..beautiful.fg_netup_widget..'">'
---}}
--- Register widget
---vicious.register(orgwidget, vicious.widgets.org,
---  orgmode.color.past .. '$1</span>|' .. orgmode.color.today  .. '$2</span>|' ..
- -- orgmode.color.soon .. '$3</span>|' .. orgmode.color.future .. '$4</span>',
---  601, orgmode.files)
--- Register buttons
---orgwidget:buttons(awful.util.table.join(
---  awful.button({ }, 1, function () exec("emacsclient --eval '(org-agenda-list)'") end),
---  awful.button({ }, 3, function () exec("emacsclient --eval '(make-remember-frame)'") end)
---))
--- }}}
-
--- {{{ Volume level
-local volicon = widget({ type = "imagebox" })
-volicon.image = image(beautiful.widget_vol)
--- Initialize widgets
-local volwidget = widget({ type = "textbox" })
-local volbar    = awful.widget.progressbar()
--- Progressbar properties
-volbar:set_width(8)
-volbar:set_height(10)
-volbar:set_vertical(true)
-volbar:set_background_color(beautiful.fg_off_widget)
-volbar:set_border_color(nil)
-volbar:set_color(beautiful.fg_widget)
-volbar:set_gradient_colors({ beautiful.fg_widget,
-    beautiful.fg_center_widget, beautiful.fg_end_widget })
-awful.widget.layout.margins[volbar.widget] = { top = 2, bottom = 2 }
--- Enable caching
-vicious.enable_caching(vicious.widgets.volume)
--- Register widgets
-vicious.register(volwidget, vicious.widgets.volume, "$1%", 2, "PCM")
-vicious.register(volbar,    vicious.widgets.volume, "$1",  2, "PCM")
--- Register buttons
-volbar.widget:buttons(awful.util.table.join(
-   awful.button({ }, 1, function () exec("kmix") end),
-   awful.button({ }, 2, function () exec("amixer -q sset Master toggle") end),
-   awful.button({ }, 4, function () exec("amixer -q sset PCM 2dB+") end),
-   awful.button({ }, 5, function () exec("amixer -q sset PCM 2dB-") end)
-)) volwidget:buttons( volbar.widget:buttons() )
--- }}}
-
+----local mailwidget = widget({ type = "textbox" })
+---- Register widget
+----vicious.register(mailwidget, vicious.widgets.mbox, "$1", 181, "/home/anrxc/mail/Inbox")
+---- Register buttons
+----mailwidget:buttons(awful.util.table.join(
+----  awful.button({ }, 1, function () exec("urxvt -title Alpine -e alpine_exp") end)
+----))
+---- }}}
+--
+---- {{{ Org-mode agenda
+----local orgicon = widget({ type = "imagebox" })
+----orgicon.image = image(beautiful.widget_org)
+------ Initialize widget
+----local orgwidget = widget({ type = "textbox" })
+------ Configure widget
+----local orgmode = {
+----  files = {
+----    "/home/anrxc/.org/work.org",     "/home/anrxc/.org/index.org",
+----    "/home/anrxc/.org/personal.org", "/home/anrxc/.org/computers.org"
+----  },
+----  color = {
+----    past   = '<span color="'..beautiful.fg_urgent..'">',
+----    today  = '<span color="'..beautiful.fg_normal..'">',
+----    soon   = '<span color="'..beautiful.fg_widget..'">',
+----    future = '<span color="'..beautiful.fg_netup_widget..'">'
+----}}
+---- Register widget
+----vicious.register(orgwidget, vicious.widgets.org,
+----  orgmode.color.past .. '$1</span>|' .. orgmode.color.today  .. '$2</span>|' ..
+-- -- orgmode.color.soon .. '$3</span>|' .. orgmode.color.future .. '$4</span>',
+----  601, orgmode.files)
+---- Register buttons
+----orgwidget:buttons(awful.util.table.join(
+----  awful.button({ }, 1, function () exec("emacsclient --eval '(org-agenda-list)'") end),
+----  awful.button({ }, 3, function () exec("emacsclient --eval '(make-remember-frame)'") end)
+----))
+---- }}}
+--
+---- {{{ Volume level
+--local volicon = widget({ type = "imagebox" })
+--volicon.image = image(beautiful.widget_vol)
+---- Initialize widgets
+--local volwidget = widget({ type = "textbox" })
+--local volbar    = awful.widget.progressbar()
+---- Progressbar properties
+--volbar:set_width(8)
+--volbar:set_height(10)
+--volbar:set_vertical(true)
+--volbar:set_background_color(beautiful.fg_off_widget)
+--volbar:set_border_color(nil)
+--volbar:set_color(beautiful.fg_widget)
+--volbar:set_gradient_colors({ beautiful.fg_widget,
+--    beautiful.fg_center_widget, beautiful.fg_end_widget })
+--awful.widget.layout.margins[volbar.widget] = { top = 2, bottom = 2 }
+---- Enable caching
+--vicious.enable_caching(vicious.widgets.volume)
+---- Register widgets
+--vicious.register(volwidget, vicious.widgets.volume, "$1%", 2, "PCM")
+--vicious.register(volbar,    vicious.widgets.volume, "$1",  2, "PCM")
+---- Register buttons
+--volbar.widget:buttons(awful.util.table.join(
+--   awful.button({ }, 1, function () exec("kmix") end),
+--   awful.button({ }, 2, function () exec("amixer -q sset Master toggle") end),
+--   awful.button({ }, 4, function () exec("amixer -q sset PCM 2dB+") end),
+--   awful.button({ }, 5, function () exec("amixer -q sset PCM 2dB-") end)
+--)) volwidget:buttons( volbar.widget:buttons() )
+---- }}}
+--
 -- {{{ Date and time
 local dateicon = widget({ type = "imagebox" })
 dateicon.image = image(beautiful.widget_date)
@@ -282,9 +287,9 @@ datewidget = widget({ type = "textbox" })
 -- Register widget
 vicious.register(datewidget, vicious.widgets.date, "%b %d, %R", 61)
 -- Register buttons
-datewidget:buttons(awful.util.table.join(
-  awful.button({ }, 1, function () exec("pylendar.py") end)
-))
+--datewidget:buttons(awful.util.table.join(
+--  awful.button({ }, 1, function () exec("pylendar.py") end)
+--))
 -- }}}
 
 -- {{{ System tray
@@ -336,15 +341,17 @@ for s = 1, screen.count() do
         },
 		s == screen.count() and systray or nil,
         spacer, datewidget, spacer ,dateicon,
+		spacer, uptimewidget, spacer,
 --        separator, volwidget, spacer, volbar.widget, volicon,
 --       separator, spacer, orgwidget, orgicon,
 --        separator, mailwidget, mailicon,
-        separator, spacer, fs.s.widget, fs.h.widget, fs.r.widget, fsicon,
+--        separator, spacer, fs.s.widget, fs.h.widget, fs.r.widget, fsicon,
 	    separator, upicon, netwidget, dnicon,
         separator, spacer, membar.widget, spacer, memicon,
-		separator, spacer, cpugraph.widget, spacer, cpuicon, 
+		separator, spacer, cpugraph.widget, spacer, cpuicon,
+		spacer, loadwidget, spacer,
 		separator, spacer, tzswidget, tempicon, spacer,
-        separator, spacer, batwidget, baticon,
+      separator, spacer, batwidget, baticon,
         layout = awful.widget.layout.horizontal.rightleft
     }
 	else
