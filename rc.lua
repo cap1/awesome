@@ -189,6 +189,14 @@ vicious.register(fs.s, vicious.widgets.fs, "${/home/cap/data used_p}")
 --vicious.register(fs.b, vicious.widgets.fs, "${/mnt/backup used_p}",  599)
 ---- }}}
 --
+--{{ hdd temp
+--local hddtempwidget = widget({ type = "textbox" })
+--vicious.register(hddtempwidget, vicious.widgets.hddtemp, "${/dev/sda}", 19)
+
+
+-- }}
+
+
 -- {{{ Network usage
 local dnicon = widget({ type = "imagebox" })
 local upicon = widget({ type = "imagebox" })
@@ -207,7 +215,17 @@ vicious.register(netwidget, vicious.widgets.net, '<span color="'
   .. beautiful.fg_netup_widget ..'">${wlan0 up_kb}</span>', 3)
 end
 -- }}}
---
+-- {{{ Wireless
+local wifiicon = widget({ type = "imagebox" })
+wifiicon.image = image(beautiful.widget_sat)
+
+local wifiwidget = widget({ type = "textbox" })
+vicious.register(wifiwidget, vicious.widgets.wifi, "${link}%", 6, "wlan0")
+
+
+-- }}}
+
+
 ---- {{{ Mail subject
 ----local mailicon = widget({ type = "imagebox" })
 ----mailicon.image = image(beautiful.widget_mail)
@@ -348,10 +366,11 @@ for s = 1, screen.count() do
 --        separator, mailwidget, mailicon,
         separator, spacer, fs.s.widget, fs.h.widget, fs.r.widget, fsicon,
 	    separator, upicon, netwidget, dnicon,
+		separator, spacer, wifiwidget, spacer, wifiicon,
         separator, spacer, membar.widget, spacer, memicon,
 		separator, spacer, cpugraph.widget, spacer, cpuicon,
 		spacer, loadwidget, spacer,
-		separator, spacer, tzswidget, tempicon, spacer,
+		separator, spacer, tzswidget, tempicon, 
       separator, spacer, batwidget, baticon,
         layout = awful.widget.layout.horizontal.rightleft
     }

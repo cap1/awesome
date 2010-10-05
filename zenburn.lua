@@ -118,6 +118,8 @@ theme.widget_org    = theme.confdir .. "/icons/cal.png"
 theme.widget_date   = theme.confdir .. "/icons/time.png"
 theme.widget_crypto = theme.confdir .. "/icons/crypto.png"
 theme.widget_temp	= theme.confdir .. "/icons/temp.png"
+theme.widget_wifi	= theme.confdir .. "/icons/wifi.png"
+theme.widget_sat	= theme.confdir .. "/icons/sat.png"
 -- }}}
 
 -- {{{ Titlebar icons
