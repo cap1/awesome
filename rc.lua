@@ -55,12 +55,12 @@ local tags = {}
 tags.setup = {
     { name = "zsh",  layout = layouts[3]  },
     { name = "vim",     layout = layouts[2] },
-    { name = "meangene", layout = layouts[3]  },
+    { name = "ssh", layout = layouts[3]  },
     { name = "http",   layout = layouts[6]  },
     { name = "mail",  layout = layouts[6]  ,mwfact = 0.85 },
-    { name = "code",     layout = layouts[3] },
+    { name = "do",     layout = layouts[3] },
     { name = "media",    layout = layouts[5] },
-    { name = "office",   layout = layouts[6]  },
+    { name = "office",   layout = layouts[3]  },
     { name = "misc", layout = layouts[1]  }
 }
 
@@ -220,7 +220,9 @@ local wifiicon = widget({ type = "imagebox" })
 wifiicon.image = image(beautiful.widget_sat)
 
 local wifiwidget = widget({ type = "textbox" })
-vicious.register(wifiwidget, vicious.widgets.wifi, "${link}%", 6, "wlan0")
+local ssidwidget = widget({ type = "textbox" })
+vicious.register(wifiwidget, vicious.widgets.wifi, "${link}%", 7, "wlan0")
+vicious.register(ssidwidget, vicious.widgets.wifi, "${ssid}", 17, "wlan0")
 
 
 -- }}}
@@ -317,11 +319,15 @@ local systray = widget({ type = "systray" })
 -- }}}
 --
 --
+--
+
+
 -- {{{ Wibox initialisation
 local wibox     = {}
 local promptbox = {}
 local layoutbox = {}
 local taglist   = {}
+local taskbar 	= {}
 taglist.buttons = awful.util.table.join(
     awful.button({ }, 1, awful.tag.viewonly),
     awful.button({ modkey }, 1, awful.client.movetotag),
@@ -330,6 +336,32 @@ taglist.buttons = awful.util.table.join(
     awful.button({ }, 4, awful.tag.viewnext),
     awful.button({ }, 5, awful.tag.viewprev
 ))
+
+mytasklist = {}
+mytasklist.buttons = awful.util.table.join(
+                     awful.button({ }, 1, function (c)
+                                              if not c:isvisible() then
+                                                  awful.tag.viewonly(c:tags()[1])
+                                              end
+                                              client.focus = c
+                                              c:raise()
+                                          end),
+                     awful.button({ }, 3, function ()
+                                              if instance then
+                                                  instance:hide()
+                                                  instance = nil
+                                              else
+                                                  instance = awful.menu.clients({ width=250 })
+                                              end
+                                          end),
+                     awful.button({ }, 4, function ()
+                                              awful.client.focus.byidx(1)
+                                              if client.focus then client.focus:raise() end
+                                          end),
+                     awful.button({ }, 5, function ()
+                                              awful.client.focus.byidx(-1)
+                                              if client.focus then client.focus:raise() end
+                                          end))
 
 for s = 1, screen.count() do
     -- Create a promptbox
@@ -342,6 +374,11 @@ for s = 1, screen.count() do
         awful.button({ }, 4, function () awful.layout.inc(layouts, 1) end),
         awful.button({ }, 5, function () awful.layout.inc(layouts, -1) end)
     ))
+	 
+    -- Create a tasklist widget
+    mytasklist[s] = awful.widget.tasklist(function(c)
+                                              return awful.widget.tasklist.label.currenttags(c, s)
+                                          end, mytasklist.buttons)
 
     -- Create the taglist
     taglist[s] = awful.widget.taglist(s, awful.widget.taglist.label.all, taglist.buttons)
@@ -351,6 +388,16 @@ for s = 1, screen.count() do
         bg = beautiful.bg_normal, position = "top"
     })
     -- Add widgets to the wibox
+    -- Create the wibox
+    -- Add widgets to the wibox - order matters
+    taskbar[s] = awful.wibox({ screen = s,
+        fg = beautiful.fg_normal, height = 12,
+        bg = beautiful.bg_normal, position = "bottom"
+			})
+
+    taskbar[s].widgets = { mytasklist[s], 
+            layout = awful.widget.layout.horizontal.leftright}
+
     if s == 2 or screen.count() == 1 then
     wibox[s].widgets = {
         {   taglist[s],
@@ -367,6 +414,7 @@ for s = 1, screen.count() do
         separator, spacer, fs.s.widget, fs.h.widget, fs.r.widget, fsicon,
 	    separator, upicon, netwidget, dnicon,
 		separator, spacer, wifiwidget, spacer, wifiicon,
+--	    ssidwidget, spacer,
         separator, spacer, membar.widget, spacer, memicon,
 		separator, spacer, cpugraph.widget, spacer, cpuicon,
 		spacer, loadwidget, spacer,
