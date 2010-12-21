@@ -53,15 +53,15 @@ local layouts = {
 -- {{{ Tags
 local tags = {}
 tags.setup = {
-    { name = "zsh",  layout = layouts[3]  },
-    { name = "vim",     layout = layouts[2] },
-    { name = "ssh", layout = layouts[3]  },
-    { name = "http",   layout = layouts[6]  },
-    { name = "mail",  layout = layouts[6]  ,mwfact = 0.85 },
-    { name = "do",     layout = layouts[3] },
-    { name = "media",    layout = layouts[5] },
-    { name = "office",   layout = layouts[3]  },
-    { name = "misc", layout = layouts[1]  }
+    { name = "zsh", 	layout = layouts[5] },
+    { name = "vim",     layout = layouts[5] },
+    { name = "ssh",		layout = layouts[5] },
+    { name = "http",  	layout = layouts[6] },
+    { name = "mail", 	layout = layouts[6] ,mwfact = 0.85 },
+    { name = "do",    	layout = layouts[3] },
+    { name = "media",   layout = layouts[6] ,mwfact = 0.85 },
+    { name = "office",  layout = layouts[5] },
+    { name = "misc",	layout = layouts[1] }
 }
 
 for s = 1, screen.count() do
@@ -80,6 +80,7 @@ end
 
 -- {{{ Autostart
 exec("run_once urxvtd")
+exec("amixer set Beep mute -q")
 -- }}}
 
 
@@ -391,7 +392,7 @@ for s = 1, screen.count() do
     -- Create the wibox
     -- Add widgets to the wibox - order matters
     taskbar[s] = awful.wibox({ screen = s,
-        fg = beautiful.fg_normal, height = 12,
+        fg = beautiful.fg_normal, height = 14,
         bg = beautiful.bg_normal, position = "bottom"
 			})
 
