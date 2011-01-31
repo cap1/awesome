@@ -92,7 +92,7 @@ exec("amixer set Beep mute -q")
 local spacer    = widget({ type = "textbox" })
 local separator = widget({ type = "textbox" })
 spacer.text     = " "
-separator.text  = "|"
+separator.text  = ""
 -- }}}
 
 -- {{{ CPU usage and temperature
@@ -116,7 +116,7 @@ cpugraph:set_gradient_colors({ beautiful.fg_end_widget,
 awful.widget.layout.margins[cpugraph.widget] = { top = 2, bottom = 2 }
 --- Register widgets
 vicious.register(cpugraph,  vicious.widgets.cpu,     "$1", 3)
-vicious.register(tzswidget, vicious.widgets.thermal, "$1°C", 19, "thermal_zone0", "core")
+vicious.register(tzswidget, vicious.widgets.thermal, "$1", 19, "thermal_zone0", "core")
 ---- }}}
 --
 -- {{{ Battery state
@@ -125,7 +125,7 @@ baticon.image = image(beautiful.widget_bat)
 -- Initialize widget
 batwidget = widget({ type = "textbox" })
 -- Register widget
-vicious.register(batwidget, vicious.widgets.bat, "$1$2%", 61, "BAT0")
+vicious.register(batwidget, vicious.widgets.bat, "$1$2", 61, "BAT0")
 -- }}}
 --
 -- {{{ Memory usage
@@ -151,7 +151,7 @@ vicious.register(membar, vicious.widgets.mem, "$1", 13)
 uptimewidget = widget({ type = "textbox" })
 loadwidget = widget({ type = "textbox" })
 --
-vicious.register(uptimewidget, vicious.widgets.uptime, "$2h")
+vicious.register(uptimewidget, vicious.widgets.uptime, "$2")
 vicious.register(loadwidget, vicious.widgets.uptime, "$4 $5 $6")
 ---- }}}
 --
@@ -221,9 +221,9 @@ local wifiicon = widget({ type = "imagebox" })
 wifiicon.image = image(beautiful.widget_sat)
 
 local wifiwidget = widget({ type = "textbox" })
-local ssidwidget = widget({ type = "textbox" })
-vicious.register(wifiwidget, vicious.widgets.wifi, "${link}%", 7, "wlan0")
-vicious.register(ssidwidget, vicious.widgets.wifi, "${ssid}", 17, "wlan0")
+--local ssidwidget = widget({ type = "textbox" })
+vicious.register(wifiwidget, vicious.widgets.wifi, "${link}", 7, "wlan0")
+--vicious.register(ssidwidget, vicious.widgets.wifi, "${ssid}", 17, "wlan0")
 
 
 -- }}}
@@ -392,7 +392,7 @@ for s = 1, screen.count() do
     -- Create the wibox
     -- Add widgets to the wibox - order matters
     taskbar[s] = awful.wibox({ screen = s,
-        fg = beautiful.fg_normal, height = 14,
+        fg = beautiful.fg_normal, height = 12,
         bg = beautiful.bg_normal, position = "bottom"
 			})
 
@@ -414,13 +414,13 @@ for s = 1, screen.count() do
 --        separator, mailwidget, mailicon,
         separator, spacer, fs.s.widget, fs.h.widget, fs.r.widget, fsicon,
 	    separator, upicon, netwidget, dnicon,
-		separator, spacer, wifiwidget, spacer, wifiicon,
+		separator, spacer, wifiwidget, wifiicon,
 --	    ssidwidget, spacer,
         separator, spacer, membar.widget, spacer, memicon,
 		separator, spacer, cpugraph.widget, spacer, cpuicon,
 		spacer, loadwidget, spacer,
-		separator, spacer, tzswidget, tempicon, 
-      separator, spacer, batwidget, baticon,
+		separator, tempicon, tzswidget, spacer,
+      separator, baticon, batwidget,
         layout = awful.widget.layout.horizontal.rightleft
     }
 	else
@@ -636,8 +636,14 @@ root.keys(globalkeys)
 	      properties = { tag = tags[1][4] } },
 	    { rule = { class = "digikam" },
 	      properties = { tag = tags[1][6] } },
-	    { rule = { class = "Choqok" },
+	    { rule = { class = "Gwenview" },
 	      properties = { tag = tags[1][9] } },
+	    { rule = { class = "LibreOffice" },
+	      properties = { tag = tags[1][8] } },
+	    { rule = { class = "Ark" },
+	      properties = { tag = tags[1][7] } },
+	    { rule = { class = "Amarok" },
+	      properties = { tag = tags[1][7] } },
 	    { rule = { class = "Eclipse" },
 	      properties = { tag = tags[1][6] } },
 	    { rule = { class = "Xmessage", instance = "xmessage" },
