@@ -58,10 +58,10 @@ tags.setup = {
     { name = "ssh",		layout = layouts[5] },
     { name = "http",  	layout = layouts[6] },
     { name = "mail", 	layout = layouts[6] ,mwfact = 0.85 },
-    { name = "do",    	layout = layouts[3] },
+    { name = "work",    	layout = layouts[3] },
     { name = "media",   layout = layouts[6] ,mwfact = 0.85 },
     { name = "office",  layout = layouts[5] },
-    { name = "misc",	layout = layouts[1] }
+    { name = "var",	layout = layouts[1] }
 }
 
 for s = 1, screen.count() do
@@ -79,6 +79,7 @@ end
 
 
 -- {{{ Autostart
+exec("nm-applet --sm-disable &")
 exec("run_once urxvtd")
 exec("amixer set Beep mute -q")
 -- }}}
@@ -217,12 +218,12 @@ vicious.register(netwidget, vicious.widgets.net, '<span color="'
 end
 -- }}}
 -- {{{ Wireless
-local wifiicon = widget({ type = "imagebox" })
-wifiicon.image = image(beautiful.widget_sat)
+--local wifiicon = widget({ type = "imagebox" })
+--wifiicon.image = image(beautiful.widget_sat)
 
-local wifiwidget = widget({ type = "textbox" })
+--local wifiwidget = widget({ type = "textbox" })
 --local ssidwidget = widget({ type = "textbox" })
-vicious.register(wifiwidget, vicious.widgets.wifi, "${link}", 7, "wlan0")
+--vicious.register(wifiwidget, vicious.widgets.wifi, "${link}", 7, "wlan0")
 --vicious.register(ssidwidget, vicious.widgets.wifi, "${ssid}", 17, "wlan0")
 
 
@@ -392,7 +393,7 @@ for s = 1, screen.count() do
     -- Create the wibox
     -- Add widgets to the wibox - order matters
     taskbar[s] = awful.wibox({ screen = s,
-        fg = beautiful.fg_normal, height = 12,
+        fg = beautiful.fg_normal, height = 13,
         bg = beautiful.bg_normal, position = "bottom"
 			})
 
@@ -408,13 +409,13 @@ for s = 1, screen.count() do
         },
 		s == screen.count() and systray or nil,
         spacer, datewidget, spacer ,dateicon,
-		spacer, uptimewidget, spacer,
+		uptimewidget,
 --        separator, volwidget, spacer, volbar.widget, volicon,
 --       separator, spacer, orgwidget, orgicon,
 --        separator, mailwidget, mailicon,
         separator, spacer, fs.s.widget, fs.h.widget, fs.r.widget, fsicon,
 	    separator, upicon, netwidget, dnicon,
-		separator, spacer, wifiwidget, wifiicon,
+	--	separator, spacer, wifiwidget, wifiicon,
 --	    ssidwidget, spacer,
         separator, spacer, membar.widget, spacer, memicon,
 		separator, spacer, cpugraph.widget, spacer, cpuicon,
@@ -461,7 +462,7 @@ local clientbuttons = awful.util.table.join(
 local globalkeys = awful.util.table.join(
     -- {{{ Applications
     awful.key({ modkey }, "t", function () exec("thunderbird") end),
-    awful.key({ modkey }, "w", function () exec("firefox") end),
+    awful.key({ modkey }, "w", function () exec("firefox-beta-bin") end),
     awful.key({ modkey }, "Return",  function () exec("urxvtc") end),
 	--    awful.key({ modkey }, "a", function () exec("urxvt -title Alpine -e alpine_exp") end),
 --    awful.key({ modkey }, "g", function () sexec("GTK2_RC_FILES=~/.gtkrc-gajim gajim") end),
@@ -658,9 +659,9 @@ root.keys(globalkeys)
 	      properties = { floating = true } },
 	    { rule = { instance = "firefox" },
 	      properties = { floating = true } },
-	    { rule = { class = "Kile" },
+	    { rule = { class = "Gedit" },
 	      properties = { tag = tags[1][6] } },
-	    { rule = { class = "Okular" },
+	    { rule = { class = "Evince" },
 	      properties = { tag = tags[1][8] } },
 	}
 else
